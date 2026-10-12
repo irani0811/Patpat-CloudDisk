@@ -1,0 +1,85 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: EasyCloudDisk
+  
+  datasource:
+    url: jdbc:mysql://localhost:3306/clouddisk?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&useUnicode=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: your_password_here
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  jpa:
+    hibernate:
+      ddl-auto: update  # 生产环境使用update，开发环境使用create-drop
+    show-sql: false     # 生产环境关闭SQL日志
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: false
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+  
+  # 完全禁用Spring Security自动配置
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+# JWT配置
+jwt:
+  secret: mySecretKey123456789012345678901234567890
+  expiration: 86400000 # 24小时
+
+# 文件存储配置
+file:
+  storage:
+    path: ./storage/
+    max-size: 1073741824 # 1GB
+    allowed-types: 
+      - image/jpeg
+      - image/png
+      - image/gif
+      - application/pdf
+      - text/plain
+      - application/zip
+
+# 压缩配置
+compression:
+  algorithm: GZIP
+  level: 6
+
+# 加密配置
+encryption:
+  algorithm: AES
+  key-size: 256
+
+# 同步配置
+sync:
+  chunk-size: 4194304 # 4MB
+  watch-interval: 1000 # 1秒
+
+# CS服务器配置
+cs:
+  server:
+    port: 8889                        # CS服务器端口
+    max-connections: 100              # 最大连接数
+    thread-pool-size: 10              # 线程池大小
+
+# 日志配置
+logging:
+  level:
+    com.clouddisk: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

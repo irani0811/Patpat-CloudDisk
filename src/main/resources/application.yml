@@ -1,0 +1,83 @@
+server:
+  port: 8080
+  # Tomcat配置
+  tomcat:
+    max-http-form-post-size: 1GB
+    max-swallow-size: 1GB
+
+spring:
+  application:
+    name: EasyCloudDisk
+  
+  datasource:
+    url: jdbc:h2:mem:clouddisk
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 1GB
+      max-request-size: 1GB
+      enabled: true
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  
+  # 完全禁用Spring Security自动配置
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  
+# 注释掉默认安全配置，使用自定义配置
+  # security:
+  #   user:
+  #     name: admin
+  #     password: admin
+
+# JWT配置
+jwt:
+  secret: mySecretKey123456789012345678901234567890
+  expiration: 86400000 # 24小时
+
+# 文件存储配置
+file:
+  storage:
+    path: ./storage/
+    max-size: 1073741824 # 1GB
+    allowed-types: 
+      - image/jpeg
+      - image/png
+      - image/gif
+      - application/pdf
+      - text/plain
+      - application/zip
+
+# 压缩配置
+compression:
+  algorithm: GZIP
+  level: 6
+
+# 加密配置
+encryption:
+  algorithm: AES
+  key-size: 256
+
+# 同步配置
+sync:
+  chunk-size: 4194304 # 4MB
+  watch-interval: 1000 # 1秒
+
